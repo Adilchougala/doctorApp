@@ -22,7 +22,7 @@ public class AreaController {
     private AreaService areaService;
 
     @PostMapping("/saveArea")
-    @Operation(summary = "Add the area")//this is for swagger configuration
+    @Operation(summary = "Add the area")
     public ResponseEntity<AreaDto> addArea(@RequestBody AreaDto areaDto) {
         AreaDto areaDto1 = areaService.addArea(areaDto);
         return new ResponseEntity<>(areaDto1, HttpStatus.OK);
