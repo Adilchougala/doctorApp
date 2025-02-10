@@ -1,5 +1,6 @@
 package com.doctorapp.controller;
 
+import com.doctorapp.handler.APIResponse;
 import com.doctorapp.payload.AreaDto;
 import com.doctorapp.service.AreaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,16 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/areas")
 @AllArgsConstructor
-@Tag(name="Area APIs", description = "write")
+@Tag(name = "Area APIs", description = "write")
 public class AreaController {
-
 
     private AreaService areaService;
 
+
+    public static final String SUCCESS = "success";
+
     @PostMapping("/saveArea")
     @Operation(summary = "Add the area")
-    public ResponseEntity<AreaDto> addArea(@RequestBody AreaDto areaDto) {
+    public ResponseEntity<APIResponse> addArea(@RequestBody AreaDto areaDto) {
         AreaDto areaDto1 = areaService.addArea(areaDto);
-        return new ResponseEntity<>(areaDto1, HttpStatus.OK);
+        APIResponse<AreaDto> responseDto = APIResponse.<AreaDto>builder()
+                .status(SUCCESS)
+                .result(areaDto1)
+                .build();
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

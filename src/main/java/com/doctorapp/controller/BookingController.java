@@ -1,5 +1,6 @@
 package com.doctorapp.controller;
 
+import com.doctorapp.handler.APIResponse;
 import com.doctorapp.payload.BookingDto;
 import com.doctorapp.service.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,12 +19,17 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    public static final String SUCCESS = "success";
     @PostMapping("/addBooking")
     @Operation(summary = "create the appointment with the doctor")
     public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto,
                                                     @RequestParam long doctorId,
                                                     @RequestParam long patientId){
         BookingDto booking = bookingService.createBooking(bookingDto, doctorId, patientId);
+        APIResponse<BookingDto> response = APIResponse.<BookingDto>builder()
+                .status(SUCCESS)
+                .result(booking)
+                .build();
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
 
